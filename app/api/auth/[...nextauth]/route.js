@@ -8,13 +8,7 @@ const handler = NextAuth({
 	providers: [
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_ID,
-			authorization: {
-				params: {
-					redirect_uri:
-						'https://0e0d-41-90-66-81.ngrok-free.app/api/auth/callback/google',
-				},
-			},
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 		}),
 	],
 	callbacks: {

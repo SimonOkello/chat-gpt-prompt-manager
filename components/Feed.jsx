@@ -23,47 +23,19 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
 	const [searchText, setSearchText] = useState('');
-	const [prompts, setPrompts] = useState([
-		{
-			_id: '66b993b356e8cddcee65a6e2',
-			creator: {
-				_id: '66b992cc56e8cddcee65a6de',
-				email: 'simonokello.dev@gmail.com',
-				username: 'simonokello',
-				image:
-					'https://gravatar.com/avatar/9ac90bb8d25aaa676e354b7690fa0e6e?s=400&d=robohash&r=x',
-			},
-			prompt:
-				'You are a web developer, I am going to give you a piece of code. I want your advice on how to make it cleaner,more readable and efficient.',
-			tag: '#webdevelopment',
-		},
-		{
-			_id: '66b99688a341081e64068ff0',
-			creator: {
-				_id: '66b992cc56e8cddcee65a6de',
-				email: 'simonokello.dev@gmail.com',
-				username: 'simonokello',
-				image:
-					'https://gravatar.com/avatar/9ac90bb8d25aaa676e354b7690fa0e6e?s=400&d=robohash&r=x',
-			},
-			prompt: 'Testing new prompt',
-			tag: '#ideas',
-			__v: 0,
-		},
-	]);
+	const [prompts, setPrompts] = useState([]);
 
+	const fetchPrompts = async () => {
+		const response = await fetch('/api/prompt');
+		console.log(response);
+		const data = await response.json();
+		setPrompts(data);
+	};
 	const handleSearchChange = (e) => {};
 
-	// useEffect(() => {
-	// 	const fetchPrompts = async () => {
-	// 		const response = await fetch('/api/prompt');
-	// 		console.log(response);
-	// 		const data = response.json();
-	// 		setPrompts(data);
-	// 	};
-	// 	console.log(prompts);
-	// 	fetchPrompts();
-	// }, []);
+	useEffect(() => {
+		fetchPrompts();
+	}, []);
 	return (
 		<section className="feed">
 			<form className="relative flex-center w-full">
