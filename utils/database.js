@@ -13,8 +13,7 @@ export const connectToDB = async () => {
 	try {
 		await mongoose.connect(process.env.MONGODB_URI, {
 			dbName: 'prompter_db',
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
+			serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
 		});
 		isConnected = true;
 		console.log('MongoDB connected');
