@@ -11,34 +11,36 @@ const handler = NextAuth({
 			clientSecret: process.env.GOOGLE_CLIENT_ID,
 			authorization: {
 				params: {
-					redirect_uri: 'https://0e0d-41-90-66-81.ngrok-free.app/api/auth/callback/google',
+					redirect_uri:
+						'https://0e0d-41-90-66-81.ngrok-free.app/api/auth/callback/google',
 				},
 			},
 		}),
 	],
-	secret: process.env.NEXTAUTH_SECRET,
-	async session({ session }) {
-		const sessionUser = await User.findOne({ email: session.user.email });
-		session.user.id = sessionUser._id.toString();
-		return session;
-	},
-	async signIn({ profile }) {
-		try {
-			await connectToDB();
-			const userExists = await User.findOne({ email: profile.email });
+	callbacks: {
+		async session({ session }) {
+			const sessionUser = await User.findOne({ email: session.user.email });
+			session.user.id = sessionUser._id.toString();
+			return session;
+		},
+		async signIn({ profile }) {
+			try {
+				await connectToDB();
+				const userExists = await User.findOne({ email: profile.email });
 
-			if (!userExists) {
-				await User.create({
-					email: profile.email,
-					username: profile.name.replace(' ', '').toLowerCase(),
-					image: profile.picture,
-				});
+				if (!userExists) {
+					await User.create({
+						email: profile.email,
+						username: profile.name.replace(' ', '').toLowerCase(),
+						image: profile.picture,
+					});
+				}
+				return true;
+			} catch (error) {
+				console.log(error);
+				return false;
 			}
-			return true;
-		} catch (error) {
-			console.log(error);
-			return false;
-		}
+		},
 	},
 });
 
