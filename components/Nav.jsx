@@ -111,7 +111,7 @@ const Nav = () => {
 				)) || (
 					<>
 						{providers &&
-							Object.values('providers').map((provider) => (
+							Object.values(providers).map((provider) => (
 								<button
 									type="button"
 									onClick={() => signIn(provider.id)}
